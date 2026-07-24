@@ -111,7 +111,7 @@ def call_openai_mini(
 # ---------------------------------------------------------------------------
 # Task 1.3 — So sánh GPT-4o vs GPT-4o-mini
 # ---------------------------------------------------------------------------
-def compare_models(prompt: str) -> dict:
+def compare_models(prompt: str, max_tokens: int = 1024) -> dict:
     """
     Gọi cả hai model với cùng một prompt và trả về dict so sánh.
 
@@ -124,12 +124,12 @@ def compare_models(prompt: str) -> dict:
             - "gpt4o_cost_estimate": float  (USD ước tính cho phản hồi)
 
     Gợi ý:
-        cost = (len(response.split()) / 0.75) / 1000 \\
+        cost = (len(response.split()) / 0.75) / 1000 \
                * PRICING_PER_1K_TOKENS["gpt-4o"]["output"]
         (0.75 từ ≈ 1 token — ước lượng thô; Part 2 sẽ tính chính xác hơn)
     """
-    gpt4o_text, gpt4o_latency = call_openai(prompt)
-    mini_text, mini_latency = call_openai_mini(prompt)
+    gpt4o_text, gpt4o_latency = call_openai(prompt, max_tokens=max_tokens)
+    mini_text, mini_latency = call_openai_mini(prompt, max_tokens=max_tokens)
     
     gpt4o_tokens = len(gpt4o_text.split()) / 0.75
     gpt4o_cost_estimate = (gpt4o_tokens / 1000) * PRICING_PER_1K_TOKENS["gpt-4o"]["output"]
